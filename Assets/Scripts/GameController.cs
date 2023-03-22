@@ -8,6 +8,10 @@ public class GameController : MonoBehaviour
     private CubeSpawner         cubeSpawner;
     [SerializeField]
     private CameraController    cameraController;
+    [SerializeField]
+    private UIController        uiController;
+
+    private bool                isGameStart = false;
 
     // 업데이트로 하지 않은것이 의문
     private IEnumerator Start()
@@ -16,6 +20,12 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (!isGameStart)
+                {
+                    isGameStart = true;
+                    uiController.GameStart();
+                }
+
                 if (cubeSpawner.CurrentCube != null)
                 {
                     bool isGameOver = cubeSpawner.CurrentCube.Arrangement();
