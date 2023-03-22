@@ -19,6 +19,21 @@ public class GameController : MonoBehaviour
     {
         while (true)
         {
+            //테스트용 코드
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (cubeSpawner.CurrentCube != null)
+                {
+                    cubeSpawner.CurrentCube.transform.position = cubeSpawner.LastCube.position + Vector3.up*0.1f;
+
+                    cubeSpawner.CurrentCube.Arrangement();
+                    currentScore++;
+                    uiController.UpdateScore(currentScore);
+                }
+                cameraController.MoveOneStep();
+                cubeSpawner.SpawnCube();
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 if (!isGameStart)

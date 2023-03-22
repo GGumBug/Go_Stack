@@ -8,9 +8,11 @@ public enum MoveAxis { x = 0, z}
 public class CubeSpawner : MonoBehaviour
 {
     [SerializeField]
-    private Transform[]     cubeSpawnPoints; //큐브 생성 위치
+    private Transform[]         cubeSpawnPoints; //큐브 생성 위치
     [SerializeField]
-    private Transform       movingCubePrefab;
+    private Transform           movingCubePrefab;
+    [SerializeField]
+    private PerfectController   perfectController;
 
     [field:SerializeField]
     public Transform        LastCube { set; get;}
@@ -49,7 +51,7 @@ public class CubeSpawner : MonoBehaviour
 
         clone.GetComponent<MeshRenderer>().material.color = GetRandomColor();
 
-        clone.GetComponent<MovingCube>().SetUp(this, moveAxis);
+        clone.GetComponent<MovingCube>().SetUp(this, perfectController, moveAxis);
 
         // 나머지 활용 0,1 번갈아가며 돌아감
         moveAxis = (MoveAxis)(((int)moveAxis + 1) % cubeSpawnPoints.Length);

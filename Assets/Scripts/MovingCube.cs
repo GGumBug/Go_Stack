@@ -8,12 +8,14 @@ public class MovingCube : MonoBehaviour
     private float           moveSpeed = 1.5f;
     private Vector3         moveDirection;
 
-    private CubeSpawner     cubeSpawner;
-    private MoveAxis        moveAxis;
+    private CubeSpawner         cubeSpawner;
+    private PerfectController   perfectController;
+    private MoveAxis            moveAxis;
 
-    public void SetUp(CubeSpawner cubeSpawner, MoveAxis moveAxis)
+    public void SetUp(CubeSpawner cubeSpawner, PerfectController perfectController, MoveAxis moveAxis)
     {
         this.cubeSpawner = cubeSpawner;
+        this.perfectController = perfectController;
         this.moveAxis = moveAxis;
 
         if (moveAxis == MoveAxis.x) moveDirection = Vector3.left;
@@ -46,18 +48,23 @@ public class MovingCube : MonoBehaviour
             return true;
         }
 
-        // 어느쪽 방향으로 튀어 나왔는지 양수인지 음수인지로 판단
-        float direction = hangOver >= 0 ? 1 : -1;
+        bool IsPerfect = perfectController.IsPerfect(hangOver);
 
-        if ( moveAxis == MoveAxis.x)
+        if (!IsPerfect)
         {
-            SplitCubeOnX(hangOver, direction);
-        }
-        else if (moveAxis == MoveAxis.z)
-        {
-            SplitCubeOnZ(hangOver, direction);
-        }
+            // 어느쪽 방향으로 튀어 나왔는지 양수인지 음수인지로 판단
+            float direction = hangOver >= 0 ? 1 : -1;
 
+            if ( moveAxis == MoveAxis.x)
+            {
+                SplitCubeOnX(hangOver, direction);
+            }
+            else if (moveAxis == MoveAxis.z)
+            {
+                SplitCubeOnZ(hangOver, direction);
+            }
+        }
+        
         cubeSpawner.LastCube = this.transform;
 
         return false;
