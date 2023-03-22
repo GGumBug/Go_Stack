@@ -14,6 +14,7 @@ public class CubeSpawner : MonoBehaviour
 
     [field:SerializeField]
     public Transform        LastCube { set; get;}
+    public MovingCube       CurrentCube {set; get;} = null;
 
     [SerializeField]
     private float           colorWeight = 15.0f; // 색상이 비슷한 정도
@@ -43,10 +44,14 @@ public class CubeSpawner : MonoBehaviour
 
         clone.GetComponent<MeshRenderer>().material.color = GetRandomColor();
 
+        clone.GetComponent<MovingCube>().SetUp(this, moveAxis);
+
         // 나머지 활용 0,1 번갈아가며 돌아감
         moveAxis = (MoveAxis)(((int)moveAxis + 1) % cubeSpawnPoints.Length);
 
-        LastCube = clone;
+        //LastCube = clone;
+
+        CurrentCube = clone.GetComponent<MovingCube>();
     }
 
     //시작점부터 끝점까지 와이어큐브로 라인을 그리는 함수

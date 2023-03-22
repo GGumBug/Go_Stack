@@ -16,6 +16,11 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                if (cubeSpawner.CurrentCube != null)
+                {
+                    cubeSpawner.CurrentCube.Arrangement();
+                }
+
                 cameraController.MoveOneStep();
 
                 cubeSpawner.SpawnCube();
