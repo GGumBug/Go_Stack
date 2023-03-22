@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     private UIController        uiController;
 
     private bool                isGameStart = false;
+    private int                 currentScore = 0;
 
     // 업데이트로 하지 않은것이 의문
     private IEnumerator Start()
@@ -33,6 +34,9 @@ public class GameController : MonoBehaviour
                     {
                         Debug.Log("GameOver");
                     }
+
+                    currentScore ++;
+                    uiController.UpdateScore(currentScore);
                 }
 
                 cameraController.MoveOneStep();
