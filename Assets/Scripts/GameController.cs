@@ -18,7 +18,11 @@ public class GameController : MonoBehaviour
             {
                 if (cubeSpawner.CurrentCube != null)
                 {
-                    cubeSpawner.CurrentCube.Arrangement();
+                    bool isGameOver = cubeSpawner.CurrentCube.Arrangement();
+                    if (isGameOver)
+                    {
+                        Debug.Log("GameOver");
+                    }
                 }
 
                 cameraController.MoveOneStep();

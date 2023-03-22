@@ -41,6 +41,11 @@ public class MovingCube : MonoBehaviour
 
         float hangOver = GetHangOver();
 
+        if (IsGameOver(hangOver))
+        {
+            return true;
+        }
+
         // 어느쪽 방향으로 튀어 나왔는지 양수인지 음수인지로 판단
         float direction = hangOver >= 0 ? 1 : -1;
 
@@ -125,6 +130,19 @@ public class MovingCube : MonoBehaviour
         clone.AddComponent<Rigidbody>();
 
         Destroy(clone, 2);
+    }
+
+    // 이동 큐브의 겹치지 않는 부분이 last 큐브보다 크면 겹친 부분이 없다고 판단, GameOver 시킨다.
+    private bool IsGameOver(float hangOver)
+    {
+        float max = moveAxis == MoveAxis.x ? cubeSpawner.LastCube.localScale.x : cubeSpawner.LastCube.localScale.z ;
+
+        if ( Mathf.Abs(hangOver) > max)
+        {
+            return true;
+        }
+
+        return false;
     }
 
 }
