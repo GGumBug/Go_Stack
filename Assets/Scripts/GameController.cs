@@ -32,7 +32,11 @@ public class GameController : MonoBehaviour
                     bool isGameOver = cubeSpawner.CurrentCube.Arrangement();
                     if (isGameOver)
                     {
-                        Debug.Log("GameOver");
+                        //Debug.Log("GameOver");
+
+                        OnGameOver();
+
+                        yield break;
                     }
 
                     currentScore ++;
@@ -42,6 +46,38 @@ public class GameController : MonoBehaviour
                 cameraController.MoveOneStep();
 
                 cubeSpawner.SpawnCube();
+            }
+
+            yield return null;
+        }
+    }
+
+    private void OnGameOver()
+    {
+        int highScore = PlayerPrefs.GetInt("HighScore");
+
+        if (currentScore > highScore)
+        {
+            PlayerPrefs.SetInt("HighScore", currentScore);
+            uiController.GameOver(true);
+        }
+        else
+        {
+            uiController.GameOver(false);
+        }
+
+        StartCoroutine("AfterGameOver");
+    }
+
+    private IEnumerator AfterGameOver()
+    {
+        yield return new WaitForEndOfFrame();
+
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             }
 
             yield return null;
