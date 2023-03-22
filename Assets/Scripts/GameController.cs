@@ -5,7 +5,9 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField]
-    private CubeSpawner cubeSpawner;
+    private CubeSpawner         cubeSpawner;
+    [SerializeField]
+    private CameraController    cameraController;
 
     // 업데이트로 하지 않은것이 의문
     private IEnumerator Start()
@@ -14,6 +16,8 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
+                cameraController.MoveOneStep();
+
                 cubeSpawner.SpawnCube();
             }
 
