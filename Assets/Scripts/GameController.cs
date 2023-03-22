@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
                     {
                         //Debug.Log("GameOver");
 
-                        OnGameOver();
+                        cameraController.GameOverAnimation(cubeSpawner.LastCube.position.y, OnGameOver);
 
                         yield break;
                     }
