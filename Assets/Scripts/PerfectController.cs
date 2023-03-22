@@ -10,9 +10,13 @@ public class PerfectController : MonoBehaviour
     private Transform   perfectEffect;
     [SerializeField]
     private Transform   perfectComboEffect;
+    [SerializeField]
+    private Transform   perfectRecoveryEffect;
 
     private AudioSource audioSource;
 
+    [SerializeField]
+    private int     recoveryCombo = 5;
     private float   perfectCorrection = 0.01f;
     private float   addedSize = 0.1f;
     private int     perfectCombo = 0;
@@ -50,9 +54,13 @@ public class PerfectController : MonoBehaviour
 
         OnEffectProcess(position, scale);
 
-        if (perfectCombo > 0 && perfectCombo < 5)
+        if (perfectCombo > 0 && perfectCombo < recoveryCombo)
         {
             StartCoroutine(OnPerfectComboEffect(position, scale));
+        }
+        else if (perfectCombo > recoveryCombo)
+        {
+            OnPerfectRecoveryEffect();
         }
     }
 
@@ -105,5 +113,21 @@ public class PerfectController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void OnPerfectRecoveryEffect()
+    {
+        Transform effect = Instantiate(perfectRecoveryEffect);
+
+        effect.position = cubeSpawner.CurrentCube.transform.position;
+
+        // 반경 반지름과 두께 설정
+        var shape = effect.GetComponent<ParticleSystem>().shape;
+        float radius = cubeSpawner.CurrentCube.transform.localScale.x > cubeSpawner.CurrentCube.transform.localScale.z ? cubeSpawner.CurrentCube.transform.localScale.x : cubeSpawner.CurrentCube.transform.localScale.z;
+        shape.radius = radius;
+        shape.radiusThickness = radius * 0.5f;
+
+        // 이동 큐브의 방향에 따라 일부분 회복
+        cubeSpawner.CurrentCube.RecoveryCube();
     }
 }
