@@ -9,15 +9,22 @@ public class PerfectController : MonoBehaviour
     [SerializeField]
     private Transform   perfectEffect;
 
+    private AudioSource audioSource;
+
     private float   perfectCorrection = 0.01f;
     private float   addedSize = 0.1f;
     private int     perfectCombo = 0;
+
+    private void Awake() {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public bool IsPerfect(float hangOver)
     {
         if (Mathf.Abs(hangOver) <= perfectCorrection)
         {
             EffectProcess();
+            SFXProcess();
 
             perfectCombo ++;
 
@@ -47,5 +54,22 @@ public class PerfectController : MonoBehaviour
         Transform effect    = Instantiate(perfectEffect);
         effect.position     = position;
         effect.localScale   = scale;
+    }
+
+    private void SFXProcess()
+    {
+        int maxCombo            = 5;
+        float volumeMin         = 0.3f;
+        float volumeAdditive    = 0.15f;
+        float pitchMin          = 0.7f;
+        float pitchAdditive     = 0.15f;
+
+        if (perfectCombo < maxCombo)
+        {
+            audioSource.volume  = volumeMin + perfectCombo * volumeAdditive;
+            audioSource.pitch   = pitchMin + perfectCombo * pitchAdditive;
+        }
+
+        audioSource.Play();
     }
 }
